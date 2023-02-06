@@ -16,7 +16,6 @@ Credits and links can be found in AUTHORS.md.
   - Simpler persistence
 
 ## Using
-.. code-block:: python
 
     from bloom_filter3 import BloomFilter
 
@@ -40,7 +39,6 @@ Credits and links can be found in AUTHORS.md.
     assert "test-key" in bloom
 
 ## Persistence
-.. code-block:: python
 
     # You dont need to explicitly save the bloom filter since mmap'd files
     # are handled by the kernel, but if you're closing the program you can

@@ -1,6 +1,6 @@
 name: pytest-coverage
 on:
-  pull_request:
+  push:
     branches:
       - '*'
 jobs:

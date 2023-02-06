@@ -18,7 +18,7 @@ Credits and links can be found in AUTHORS.md.
   - Simpler persistence
 
 ## Using
-
+```python
     from bloom_filter3 import BloomFilter
 
     # instantiate BloomFilter with custom settings,
@@ -26,8 +26,9 @@ Credits and links can be found in AUTHORS.md.
     # error_rate defines accuracy; You can use defaults with
     # `BloomFilter()` without any arguments. Following example
     # is same as defaults:
+
     bloom = BloomFilter(
-      max_elements=10000,
+      max_elements=10_000,
       error_rate=0.1
     )
 
@@ -39,9 +40,10 @@ Credits and links can be found in AUTHORS.md.
 
     # Now check again
     assert "test-key" in bloom
-
+```
 ## Persistence
 
+```python
     # You dont need to explicitly save the bloom filter since mmap'd files
     # are handled by the kernel, but if you're closing the program you can
     # call flush as good practice.
@@ -49,7 +51,7 @@ Credits and links can be found in AUTHORS.md.
 
     # Load the bloom filter from disk
     bloom = BloomFilter.load("bloom-filter.bin")
-
+```
 
 ## Contributing
 

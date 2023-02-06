@@ -50,3 +50,7 @@ Credits and links can be found in AUTHORS.md.
 
 
 ## Contributing
+
+  - Please review CODE_OF_CONDUCT.md
+  - Please make sure you do `make tests` and `make lint` before submitting a PR
+  - Please make sure you add tests for any new functionality

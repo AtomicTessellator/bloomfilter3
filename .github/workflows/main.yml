@@ -1,4 +1,4 @@
-name: pytest-coverage
+name: pytest
 on:
   push:
     branches:

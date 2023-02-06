@@ -138,6 +138,6 @@ class BloomFilter:
         self.backend = None
 
     def __del__(self):
-        if hasattr(self, 'backend') and self.backend is not None:
+        if hasattr(self, "backend") and self.backend is not None:
             self.backend.close()
             self.backend = None

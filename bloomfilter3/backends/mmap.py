@@ -59,30 +59,32 @@ class Mmap_backend:
     @staticmethod
     def header_end_offset_bytes(filter) -> int:
         """
-            Return the end offset of the header in bytes, this must be a
-            multiple of mmap.ALLOCATIONGRANULARITY, because mmap can only
-            seek in offsets of mmap.ALLOCATIONGRANULARITY
+        Return the end offset of the header in bytes, this must be a
+        multiple of mmap.ALLOCATIONGRANULARITY, because mmap can only
+        seek in offsets of mmap.ALLOCATIONGRANULARITY
         """
         header_size = Mmap_backend.header_size_bytes(filter)
-        return int(header_size / mmap.ALLOCATIONGRANULARITY) * mmap.ALLOCATIONGRANULARITY
+        return (
+            int(header_size / mmap.ALLOCATIONGRANULARITY) * mmap.ALLOCATIONGRANULARITY
+        )
 
     @staticmethod
     def unpack_header(header) -> tuple:
         """Unpack the header"""
         # Format : unsigned int, currently hardcoded to "1"
-        format_, = struct.unpack("I", header[0:4])
+        (format_,) = struct.unpack("I", header[0:4])
 
         # Error Rate : float
-        error_rate_p, = struct.unpack("f", header[4:8])
+        (error_rate_p,) = struct.unpack("f", header[4:8])
 
         # Ideal Num Elements : long long
-        ideal_num_elements_n, = struct.unpack("q", header[8:16])
+        (ideal_num_elements_n,) = struct.unpack("q", header[8:16])
 
         # Num bits : long long
-        num_bits_m, = struct.unpack("q", header[16:24])
+        (num_bits_m,) = struct.unpack("q", header[16:24])
 
         # Num Probes : unsigned int
-        num_probes_k, = struct.unpack("I", header[24:28])
+        (num_probes_k,) = struct.unpack("I", header[24:28])
 
         return (
             format_,
@@ -125,7 +127,6 @@ class Mmap_backend:
         self.mmap[byteno] = byte
 
     def __iand__(self, other):
-
         if self.filter.num_bits_m != other.filter.num_bits_m:
             raise ValueError("Bitmasks must be of equal size")
 
@@ -135,7 +136,6 @@ class Mmap_backend:
         return self
 
     def __ior__(self, other):
-
         if self.filter.num_bits_m != other.filter.num_bits_m:
             raise ValueError("Bitmasks must be of equal size")
 

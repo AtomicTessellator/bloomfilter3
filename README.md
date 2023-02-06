@@ -1,3 +1,5 @@
+[![pytest](https://github.com/AtomicTessellator/bloomfilter3/actions/workflows/main.yml/badge.svg)](https://github.com/AtomicTessellator/bloomfilter3/actions/workflows/main.yml)
+
 # bloomfilter3
 
 Python bloom-filter library with a focus on ease of use and high performance.

@@ -1,0 +1,11 @@
+{
+    "python.testing.pytestArgs": [
+        "bloomfilter3"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "workbench.tree.indent": 16,
+    "coverage-gutters.coverageFileNames": [
+        "coverage.xml",
+    ]
+}

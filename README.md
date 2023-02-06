@@ -19,38 +19,38 @@ Credits and links can be found in AUTHORS.md.
 
 ## Using
 ```python
-    from bloom_filter3 import BloomFilter
+from bloom_filter3 import BloomFilter
 
-    # instantiate BloomFilter with custom settings,
-    # max_elements is how many elements you expect the filter to hold.
-    # error_rate defines accuracy; You can use defaults with
-    # `BloomFilter()` without any arguments. Following example
-    # is same as defaults:
+# instantiate BloomFilter with custom settings,
+# max_elements is how many elements you expect the filter to hold.
+# error_rate defines accuracy; You can use defaults with
+# `BloomFilter()` without any arguments. Following example
+# is same as defaults:
 
-    bloom = BloomFilter(
-      max_elements=10_000,
-      error_rate=0.1
-    )
+bloom = BloomFilter(
+  max_elements=10_000,
+  error_rate=0.1
+)
 
-    # Test whether the bloom-filter has seen a key:
-    assert "test-key" not in bloom
+# Test whether the bloom-filter has seen a key:
+assert "test-key" not in bloom
 
-    # Mark the key as seen
-    bloom.add("test-key")
+# Mark the key as seen
+bloom.add("test-key")
 
-    # Now check again
-    assert "test-key" in bloom
+# Now check again
+assert "test-key" in bloom
 ```
 ## Persistence
 
 ```python
-    # You dont need to explicitly save the bloom filter since mmap'd files
-    # are handled by the kernel, but if you're closing the program you can
-    # call flush as good practice.
-    bloom.flush()
+# You dont need to explicitly save the bloom filter since mmap'd files
+# are handled by the kernel, but if you're closing the program you can
+# call flush as good practice.
+bloom.flush()
 
-    # Load the bloom filter from disk
-    bloom = BloomFilter.load("bloom-filter.bin")
+# Load the bloom filter from disk
+bloom = BloomFilter.load("bloom-filter.bin")
 ```
 
 ## Contributing

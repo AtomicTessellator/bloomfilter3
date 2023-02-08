@@ -1,9 +1,10 @@
-from bloomfilter3.cfg import BloomFilterCfg
 import mmap
 import os
-from pathlib import Path
 import struct
+from pathlib import Path
 from typing import Tuple
+
+from bloomfilter3.cfg import BloomFilterCfg
 
 
 class Mmap_backend:
@@ -14,11 +15,7 @@ class Mmap_backend:
 
     effs = 2**8 - 1
 
-    def __init__(self,
-            bf_cfg: BloomFilterCfg,
-            filename: str
-        ) -> None:
-
+    def __init__(self, bf_cfg: BloomFilterCfg, filename: str) -> None:
         self.bf_cfg = bf_cfg
         self.num_chars = (bf_cfg.num_bits_m + 7) // 8
 
@@ -51,7 +48,7 @@ class Mmap_backend:
             num_bytes = Mmap_backend.header_end_offset_bytes(24)
             header = file_.read(num_bytes)
             file_version, bf_cfg = Mmap_backend.unpack_header(header)
-        
+
         if file_version != 1:
             raise ValueError(f"File version:{file_version} not supported")
 
@@ -59,8 +56,8 @@ class Mmap_backend:
 
     @staticmethod
     def pack_header(
-            bf_cfg: BloomFilterCfg,
-        ) -> bytearray:
+        bf_cfg: BloomFilterCfg,
+    ) -> bytearray:
         """Return the header"""
         header = bytearray()
 
@@ -88,9 +85,10 @@ class Mmap_backend:
         multiple of mmap.ALLOCATIONGRANULARITY, because mmap can only
         seek in offsets of mmap.ALLOCATIONGRANULARITY
         """
-        return (
-            max(int(header_length / mmap.ALLOCATIONGRANULARITY) * mmap.ALLOCATIONGRANULARITY,
-                mmap.ALLOCATIONGRANULARITY)
+        return max(
+            int(header_length / mmap.ALLOCATIONGRANULARITY)
+            * mmap.ALLOCATIONGRANULARITY,
+            mmap.ALLOCATIONGRANULARITY,
         )
 
     @staticmethod
@@ -114,11 +112,8 @@ class Mmap_backend:
         return (
             format_,
             BloomFilterCfg(
-                error_rate_p,
-                ideal_num_elements_n,
-                num_bits_m,
-                num_probes_k
-            )
+                error_rate_p, ideal_num_elements_n, num_bits_m, num_probes_k
+            ),
         )
 
     def is_set(self, bitno) -> int:

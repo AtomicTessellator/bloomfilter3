@@ -46,7 +46,6 @@ class BloomFilter:
     """
 
     def __init__(self, filename, max_elements: int = 10000, error_rate: float = 0.1):
-
         if max_elements <= 0:
             raise ValueError("ideal_num_elements_n must be > 0")
 
@@ -72,7 +71,7 @@ class BloomFilter:
         # Compute num_probes_k
         real_num_probes_k = (num_bits_m / max_elements) * math.log(2)
         num_probes_k = int(math.ceil(real_num_probes_k))
-        
+
         bf_cfg = BloomFilterCfg(
             error_rate_p=error_rate,
             max_elements=max_elements,
@@ -83,9 +82,7 @@ class BloomFilter:
         return bf_cfg
 
     def __repr__(self):
-        return (
-            "BloomFilter(max_elements=%d, error_rate_p=%f, " + "num_bits_m=%d)"
-        ) % (
+        return ("BloomFilter(max_elements=%d, error_rate_p=%f, " + "num_bits_m=%d)") % (
             self.bf_cfg.max_elements,
             self.bf_cfg.error_rate_p,
             self.bf_cfg.num_bits_m,

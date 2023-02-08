@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 
 from bloomfilter3.backends import Mmap_backend
+from bloomfilter3.cfg import BloomFilterCfg
 from bloomfilter3.hash.hashing import get_filter_bitno_probes
 
 try:
@@ -45,42 +46,49 @@ class BloomFilter:
     """
 
     def __init__(self, filename, max_elements: int = 10000, error_rate: float = 0.1):
+
         if max_elements <= 0:
             raise ValueError("ideal_num_elements_n must be > 0")
 
         if not (0 < error_rate < 1):
             raise ValueError("error_rate_p must be between 0 and 1 exclusive")
 
-        file = Path(filename)
-        if file.exists():
-            self.load(filename)
-        else:
-            self.error_rate_p = error_rate
-            self.ideal_num_elements_n = max_elements
-            numerator = -1 * self.ideal_num_elements_n * math.log(self.error_rate_p)
-            denominator = math.log(2) ** 2
-            real_num_bits_m = numerator / denominator
-            self.num_bits_m = int(math.ceil(real_num_bits_m))
-            real_num_probes_k = (
-                self.num_bits_m / self.ideal_num_elements_n
-            ) * math.log(2)
-            self.num_probes_k = int(math.ceil(real_num_probes_k))
-            self.probe_bitnoer = get_filter_bitno_probes
-            self.backend = Mmap_backend(self, filename)
+        self.probe_bitnoer = get_filter_bitno_probes
 
-    @staticmethod
-    def load(filename):
-        """Load a bloom filter from a file"""
-        # backend = Mmap_backend.load(filename)
-        pass
+        file = Path(filename)
+
+        if file.exists():
+            self.backend = Mmap_backend.load(filename)
+            self.bf_cfg = self.backend.bf_cfg
+        else:
+            self.bf_cfg = self.compute_config(max_elements, error_rate)
+            self.backend = Mmap_backend(self.bf_cfg, filename)
+
+    def compute_config(self, max_elements: int, error_rate) -> BloomFilterCfg:
+        numerator = -1 * max_elements * math.log(error_rate)
+        denominator = math.log(2) ** 2
+        num_bits_m = int(math.ceil(numerator / denominator))
+
+        # Compute num_probes_k
+        real_num_probes_k = (num_bits_m / max_elements) * math.log(2)
+        num_probes_k = int(math.ceil(real_num_probes_k))
+        
+        bf_cfg = BloomFilterCfg(
+            error_rate_p=error_rate,
+            max_elements=max_elements,
+            num_bits_m=num_bits_m,
+            num_probes_k=num_probes_k,
+        )
+
+        return bf_cfg
 
     def __repr__(self):
         return (
-            "BloomFilter(ideal_num_elements_n=%d, error_rate_p=%f, " + "num_bits_m=%d)"
+            "BloomFilter(max_elements=%d, error_rate_p=%f, " + "num_bits_m=%d)"
         ) % (
-            self.ideal_num_elements_n,
-            self.error_rate_p,
-            self.num_bits_m,
+            self.bf_cfg.max_elements,
+            self.bf_cfg.error_rate_p,
+            self.bf_cfg.num_bits_m,
         )
 
     def add(self, key):
@@ -99,8 +107,8 @@ class BloomFilter:
         Used in preparation for binary operations
         """
         return (
-            self.num_bits_m == bloom_filter.num_bits_m
-            and self.num_probes_k == bloom_filter.num_probes_k
+            self.bf_cfg.num_bits_m == bloom_filter.bf_cfg.num_bits_m
+            and self.bf_cfg.num_probes_k == bloom_filter.bf_cfg.num_probes_k
             and self.probe_bitnoer == bloom_filter.probe_bitnoer
         )
 

@@ -15,6 +15,11 @@ Credits and links can be found in AUTHORS.md.
   - bloom filter parameters are stored WITH the bloom filter itself on disk, no need to keep track of parameters (max_elements, error_rate) seperatly
   - Simpler persistence
 
+## Installing
+```
+pip install bloomfilter3
+```
+
 ## Using
 ```python
 from bloom_filter3 import BloomFilter

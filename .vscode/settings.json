@@ -1,6 +1,6 @@
 {
     "python.testing.pytestArgs": [
-        "bloomfilter3"
+        "."
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,

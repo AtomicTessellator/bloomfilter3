@@ -49,8 +49,8 @@ def get_filter_bitno_probes(bloom_filter, key) -> int:
     hash_value2 = hash2(int_list)
     probe_value = hash_value1
 
-    for probeno in range(1, bloom_filter.num_probes_k + 1):
+    for probeno in range(1, bloom_filter.bf_cfg.num_probes_k + 1):
         probe_value *= hash_value1
         probe_value += hash_value2
         probe_value %= MERSENNES1[2]
-        yield probe_value % bloom_filter.num_bits_m
+        yield probe_value % bloom_filter.bf_cfg.num_bits_m

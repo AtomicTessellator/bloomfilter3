@@ -6,7 +6,7 @@ Python bloom-filter library with a focus on ease of use and high performance.
 
 ## Motivation
 
-This library was heavily inspired from the excellent [bloom-filter2](https://github.com/remram44/python-bloom-filter/tree/904cea7522a18a7bbef66d3c6b2ee23738171e5a) library, however I decided to make some changes that enhanced functionality and ease of use. 
+This library was heavily inspired from the excellent [bloom-filter2](https://github.com/remram44/python-bloom-filter/tree/904cea7522a18a7bbef66d3c6b2ee23738171e5a) library, however I decided to make some changes that enhanced functionality and ease of use.
 
 Unfortunatly these changes makes the library non-backwards compatible, hence bloomfilter3 was born.
 
@@ -40,17 +40,6 @@ bloom.add("test-key")
 
 # Now check again
 assert "test-key" in bloom
-```
-## Persistence
-
-```python
-# You dont need to explicitly save the bloom filter since mmap'd files
-# are handled by the kernel, but if you're closing the program you can
-# call flush as good practice.
-bloom.flush()
-
-# Load the bloom filter from disk
-bloom = BloomFilter.load("bloom-filter.bin")
 ```
 
 ## Contributing
